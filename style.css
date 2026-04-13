@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar background (glass effect) */
+.custom-navbar {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+/* Nav links */
+.navbar .nav-link {
+  color: #ddd;
+  font-weight: 500;
+  position: relative;
+  transition: 0.3s;
+}
+
+/* Hover underline animation */
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background: #0d6efd;
+  left: 0;
+  bottom: 0;
+  transition: 0.3s;
+}
+
+.navbar .nav-link:hover {
+  color: #fff;
+}
+
+.navbar .nav-link:hover::after {
+  width: 100%;
+}
+
+/* Active link */
+.navbar .nav-link.active {
+  color: #fff;
+}
+
+/* Gradient button */
+.btn-gradient {
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  color: #fff;
+  border-radius: 50px;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #6610f2, #0d6efd);
+  transform: translateY(-2px);
+}
