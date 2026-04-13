@@ -4,53 +4,356 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="css/bootstrap-all.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
-  <div class="container">
-    
-    <!-- Logo -->
-    <a class="navbar-brand fw-bold fs-4" href="#">
-      PhoneWeb
-    </a>
+    <header class="site-header fixed-top">
+        <div class="header-topbar">
+            <div class="container">
+                <div class="topbar-inner">
+                    <span>Follow us on X (Twitter)</span>
+                    <a class="topbar-cta" href="#">CLICK HERE!</a>
+                </div>
+            </div>
+        </div>
 
-    <!-- Toggle -->
-    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <nav class="navbar navbar-expand-lg header-navbar">
+            <div class="container header-row">
+                <button class="navbar-toggler header-toggle border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="bi bi-list"></i>
+                </button>
 
-    <!-- Menu -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav align-items-lg-center gap-lg-3">
-        
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Home</a>
-        </li>
+                <a class="navbar-brand brand-mark" href="#">
+                    PhoneWeb
+                </a>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
+                <div class="collapse navbar-collapse" id="headerNav">
+                    <div class="header-search-wrap">
+                        <form class="header-search" role="search">
+                            <i class="bi bi-search"></i>
+                            <input class="form-control border-0 shadow-none" type="search" placeholder="Mobile Price in Pakistan" aria-label="Search">
+                        </form>
+                    </div>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
+                    <ul class="navbar-nav header-actions ms-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link news-pill active" href="#">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link social-link" href="#" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link social-link" href="#" aria-label="X">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link social-link" href="#" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link social-link" href="#" aria-label="YouTube">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item account-item">
+                            <a class="nav-link account-link" href="#">
+                                <i class="bi bi-person-fill"></i>
+                                <i class="bi bi-caret-down-fill account-caret"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
-        </li>
+    <main class="page-shell">
+        <section class="hero-section">
+            <div class="container">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col-lg-8">
+                        <div class="hero-showcase">
+                            <button class="hero-nav hero-nav-prev" type="button" aria-label="Previous slide">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
 
-        <!-- CTA Button -->
-        <li class="nav-item ms-lg-3">
-          <a class="btn btn-gradient px-4 py-2" href="#">Get Started</a>
-        </li>
+                            <div class="hero-slides">
+                                <article class="hero-slide active" data-slide>
+                                    <div class="device-stack" aria-hidden="true">
+                                        <div class="tablet-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="screen-grid">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
 
-      </ul>
-    </div>
-  </div>
-</nav>
+                                        <div class="phone-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="phone-product">
+                                                    <div class="phone-preview"></div>
+                                                    <div class="phone-lines">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="hero-copy">
+                                        <h1>PhoneWeb</h1>
+                                        <p>Finest Smartphone Portal of Pakistan!</p>
+                                    </div>
+                                </article>
 
+                                <article class="hero-slide" data-slide>
+                                    <div class="device-stack alt-layout" aria-hidden="true">
+                                        <div class="tablet-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="screen-grid">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="phone-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="phone-product">
+                                                    <div class="phone-preview"></div>
+                                                    <div class="phone-lines">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hero-copy">
+                                        <h1>PhoneWeb</h1>
+                                        <p>Compare prices, specs, and the latest launches in one place.</p>
+                                    </div>
+                                </article>
+
+                                <article class="hero-slide" data-slide>
+                                    <div class="device-stack warm-layout" aria-hidden="true">
+                                        <div class="tablet-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="screen-grid">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="phone-frame">
+                                            <div class="device-screen">
+                                                <div class="screen-topbar"></div>
+                                                <div class="phone-product">
+                                                    <div class="phone-preview"></div>
+                                                    <div class="phone-lines">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="hero-copy">
+                                        <h1>PhoneWeb</h1>
+                                        <p>Discover your next phone with smart filters and fast browsing.</p>
+                                    </div>
+                                </article>
+                            </div>
+
+                            <button class="hero-nav hero-nav-next" type="button" aria-label="Next slide">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+
+                            <div class="hero-dots">
+                                <button class="hero-dot active" type="button" aria-label="Go to slide 1"></button>
+                                <button class="hero-dot" type="button" aria-label="Go to slide 2"></button>
+                                <button class="hero-dot" type="button" aria-label="Go to slide 3"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <aside class="finder-card">
+                            <h2>Let's Find a Mobile For You!</h2>
+                            <p class="finder-label">By Price</p>
+
+                            <div class="price-slider">
+                                <div class="price-track"></div>
+                                <div class="price-progress" id="priceProgress"></div>
+                                <input class="range-input range-min" id="minRange" type="range" min="0" max="650000" step="5000" value="0">
+                                <input class="range-input range-max" id="maxRange" type="range" min="0" max="650000" step="5000" value="650000">
+                            </div>
+
+                            <div class="price-limits">
+                                <span>Rs. <span id="minLabel">0</span></span>
+                                <span>Rs. <span id="maxLabel">6.5 Lac</span></span>
+                            </div>
+
+                            <div class="price-boxes">
+                                <input class="price-box" id="minInput" type="number" min="0" max="650000" step="5000" value="0">
+                                <span class="price-separator">To</span>
+                                <input class="price-box" id="maxInput" type="number" min="0" max="650000" step="5000" value="650000">
+                            </div>
+
+                            <a class="finder-button" href="#">
+                                Find Mobiles
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        const heroSlides = document.querySelectorAll('[data-slide]');
+        const heroDots = document.querySelectorAll('.hero-dot');
+        const prevButton = document.querySelector('.hero-nav-prev');
+        const nextButton = document.querySelector('.hero-nav-next');
+        let currentSlide = 0;
+
+        function renderHeroSlide(index) {
+            heroSlides.forEach((slide, slideIndex) => {
+                slide.classList.toggle('active', slideIndex === index);
+            });
+
+            heroDots.forEach((dot, dotIndex) => {
+                dot.classList.toggle('active', dotIndex === index);
+            });
+        }
+
+        function goToHeroSlide(index) {
+            currentSlide = (index + heroSlides.length) % heroSlides.length;
+            renderHeroSlide(currentSlide);
+        }
+
+        prevButton.addEventListener('click', () => goToHeroSlide(currentSlide - 1));
+        nextButton.addEventListener('click', () => goToHeroSlide(currentSlide + 1));
+        heroDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToHeroSlide(index));
+        });
+
+        setInterval(() => {
+            goToHeroSlide(currentSlide + 1);
+        }, 4500);
+
+        renderHeroSlide(currentSlide);
+
+        const minRange = document.getElementById('minRange');
+        const maxRange = document.getElementById('maxRange');
+        const minInput = document.getElementById('minInput');
+        const maxInput = document.getElementById('maxInput');
+        const minLabel = document.getElementById('minLabel');
+        const maxLabel = document.getElementById('maxLabel');
+        const priceProgress = document.getElementById('priceProgress');
+        const maxPrice = 650000;
+        const minGap = 5000;
+
+        function formatLabel(value) {
+            return value >= 100000 ? `${(value / 100000).toFixed(value % 100000 === 0 ? 0 : 1)} Lac` : value.toLocaleString();
+        }
+
+        function updateSlider(fromMinInput = false) {
+            let minValue = Number(minRange.value);
+            let maxValue = Number(maxRange.value);
+
+            if (maxValue - minValue < minGap) {
+                if (fromMinInput) {
+                    minValue = maxValue - minGap;
+                    minRange.value = minValue;
+                } else {
+                    maxValue = minValue + minGap;
+                    maxRange.value = maxValue;
+                }
+            }
+
+            minInput.value = minValue;
+            maxInput.value = maxValue;
+            minLabel.textContent = minValue.toLocaleString();
+            maxLabel.textContent = formatLabel(maxValue);
+
+            const left = (minValue / maxPrice) * 100;
+            const right = (maxValue / maxPrice) * 100;
+            priceProgress.style.left = `${left}%`;
+            priceProgress.style.width = `${right - left}%`;
+        }
+
+        function updateFromBoxes() {
+            let minValue = Math.max(0, Math.min(Number(minInput.value) || 0, maxPrice - minGap));
+            let maxValue = Math.min(maxPrice, Math.max(Number(maxInput.value) || maxPrice, minGap));
+
+            if (maxValue - minValue < minGap) {
+                maxValue = Math.min(maxPrice, minValue + minGap);
+            }
+
+            minRange.value = minValue;
+            maxRange.value = maxValue;
+            updateSlider(true);
+        }
+
+        minRange.addEventListener('input', () => updateSlider(true));
+        maxRange.addEventListener('input', () => updateSlider(false));
+        minInput.addEventListener('input', updateFromBoxes);
+        maxInput.addEventListener('input', updateFromBoxes);
+
+        updateSlider(true);
+    </script>
 </body>
 </html>
