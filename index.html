@@ -260,13 +260,40 @@
                 </div>
             </div>
         </section>
+
+        <section class="products-section">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-kicker">Fresh Listings</p>
+                        <h2 class="section-title-main">Latest mobiles from your dashboard</h2>
+                    </div>
+                    <a class="section-link" href="dashboard.html">
+                        Open Dashboard
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                <div class="row g-4" id="productList"></div>
+
+                <div class="empty-products" id="emptyProducts">
+                    <i class="bi bi-phone"></i>
+                    <h3>No products added yet</h3>
+                    <p>Create your first mobile card in the dashboard and it will appear here automatically.</p>
+                    <a href="dashboard.html">Add Product</a>
+                </div>
+            </div>
+        </section>
     </main>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
+        const storageKey = 'phoneWebProducts';
         const heroSlides = document.querySelectorAll('[data-slide]');
         const heroDots = document.querySelectorAll('.hero-dot');
         const prevButton = document.querySelector('.hero-nav-prev');
         const nextButton = document.querySelector('.hero-nav-next');
+        const productList = document.getElementById('productList');
+        const emptyProducts = document.getElementById('emptyProducts');
         let currentSlide = 0;
 
         function renderHeroSlide(index) {
@@ -295,6 +322,90 @@
         }, 4500);
 
         renderHeroSlide(currentSlide);
+
+        function formatProductPrice(value) {
+            const number = Number(value) || 0;
+            return `Rs. ${number.toLocaleString()}`;
+        }
+
+        function getStoredProducts() {
+            try {
+                return JSON.parse(localStorage.getItem(storageKey)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function createProductCard(product) {
+            const column = document.createElement('div');
+            column.className = 'col-md-6 col-xl-4';
+
+            const card = document.createElement('article');
+            card.className = 'product-card';
+
+            const media = document.createElement('div');
+            media.className = 'product-card-media';
+
+            if (product.image) {
+                const image = document.createElement('img');
+                image.src = product.image;
+                image.alt = product.title;
+                media.appendChild(image);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'product-card-placeholder';
+                placeholder.innerHTML = '<i class="bi bi-phone-fill"></i>';
+                media.appendChild(placeholder);
+            }
+
+            const body = document.createElement('div');
+            body.className = 'product-card-body';
+
+            const badge = document.createElement('div');
+            badge.className = 'product-badge';
+            badge.textContent = 'PhoneWeb Pick';
+
+            const title = document.createElement('h3');
+            title.textContent = product.title;
+
+            const description = document.createElement('p');
+            description.textContent = product.description;
+
+            const footer = document.createElement('div');
+            footer.className = 'product-card-footer';
+
+            const price = document.createElement('strong');
+            price.textContent = formatProductPrice(product.price);
+
+            const meta = document.createElement('span');
+            meta.textContent = 'New listing';
+
+            footer.append(price, meta);
+            body.append(badge, title, description, footer);
+            card.append(media, body);
+            column.appendChild(card);
+
+            return column;
+        }
+
+        function renderStoredProducts() {
+            const products = getStoredProducts();
+            productList.innerHTML = '';
+
+            if (!products.length) {
+                emptyProducts.style.display = 'grid';
+                return;
+            }
+
+            emptyProducts.style.display = 'none';
+            products.forEach((product) => {
+                productList.appendChild(createProductCard(product));
+            });
+        }
+
+        renderStoredProducts();
+        window.addEventListener('storage', renderStoredProducts);
+        window.addEventListener('focus', renderStoredProducts);
 
         const minRange = document.getElementById('minRange');
         const maxRange = document.getElementById('maxRange');

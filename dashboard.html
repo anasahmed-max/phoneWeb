@@ -382,6 +382,19 @@
             box-shadow: 0 18px 34px rgba(15, 118, 110, 0.24);
         }
 
+        .submit-message {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(15, 118, 110, 0.08);
+            color: var(--dash-accent-dark);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
         .preview-header {
             display: flex;
             align-items: center;
@@ -666,6 +679,11 @@
                                     Create Product
                                 </button>
                             </div>
+
+                            <div class="submit-message" id="submitMessage">
+                                <i class="bi bi-check2-circle"></i>
+                                Product saved. Open the homepage to see it appended there.
+                            </div>
                         </form>
                     </div>
 
@@ -720,10 +738,24 @@
         const previewDescription = document.getElementById('previewDescription');
         const previewPrice = document.getElementById('previewPrice');
         const productForm = document.getElementById('productForm');
+        const submitMessage = document.getElementById('submitMessage');
+        const storageKey = 'phoneWebProducts';
 
         function formatPrice(value) {
             const number = Number(value) || 0;
             return `Rs. ${number.toLocaleString()}`;
+        }
+
+        function getStoredProducts() {
+            try {
+                return JSON.parse(localStorage.getItem(storageKey)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveProducts(products) {
+            localStorage.setItem(storageKey, JSON.stringify(products));
         }
 
         function syncPreview() {
@@ -754,13 +786,56 @@
             reader.readAsDataURL(file);
         });
 
-        titleInput.addEventListener('input', syncPreview);
-        descriptionInput.addEventListener('input', syncPreview);
-        priceInput.addEventListener('input', syncPreview);
+        titleInput.addEventListener('input', () => {
+            submitMessage.style.display = 'none';
+            syncPreview();
+        });
+        descriptionInput.addEventListener('input', () => {
+            submitMessage.style.display = 'none';
+            syncPreview();
+        });
+        priceInput.addEventListener('input', () => {
+            submitMessage.style.display = 'none';
+            syncPreview();
+        });
 
         productForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            alert('Product card is ready. Connect this form to your backend or card list next.');
+
+            const title = titleInput.value.trim();
+            const description = descriptionInput.value.trim();
+            const price = Number(priceInput.value) || 0;
+            const image = previewImage.getAttribute('src') || '';
+
+            if (!title || !description || !price) {
+                submitMessage.style.display = 'flex';
+                submitMessage.innerHTML = '<i class="bi bi-exclamation-circle"></i>Please complete title, description, and price before creating the product.';
+                return;
+            }
+
+            const products = getStoredProducts();
+            products.unshift({
+                id: Date.now(),
+                title,
+                description,
+                price,
+                image
+            });
+
+            saveProducts(products);
+            submitMessage.style.display = 'flex';
+            submitMessage.innerHTML = '<i class="bi bi-check2-circle"></i>Product saved. Open the homepage to see it appended there.';
+
+            productForm.reset();
+            fileName.innerHTML = '<i class="bi bi-paperclip"></i>No image selected';
+            previewImage.style.display = 'none';
+            previewImage.removeAttribute('src');
+            previewPlaceholder.style.display = 'block';
+
+            titleInput.value = '';
+            descriptionInput.value = '';
+            priceInput.value = '';
+            syncPreview();
         });
 
         syncPreview();
