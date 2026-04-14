@@ -524,9 +524,140 @@
             text-transform: uppercase;
         }
 
+        .news-admin-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .news-preview {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: linear-gradient(165deg, #fff7ed 0%, #ffffff 52%, #ecfeff 100%);
+            padding: 20px;
+            border: 1px solid rgba(226, 232, 240, 0.88);
+        }
+
+        .news-preview-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid rgba(203, 213, 225, 0.85);
+        }
+
+        .news-preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .news-preview-placeholder {
+            text-align: center;
+            color: #64748b;
+        }
+
+        .news-preview-placeholder i {
+            display: inline-flex;
+            margin-bottom: 10px;
+            font-size: 34px;
+        }
+
+        .news-preview-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            margin-top: 18px;
+            padding: 0 10px;
+            border-radius: 4px;
+            background: #bf0d0d;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .news-preview-title {
+            margin: 14px 0 10px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+
+        .news-preview-desc {
+            margin: 0;
+            color: var(--dash-muted);
+            line-height: 1.8;
+        }
+
+        .saved-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .saved-item {
+            display: grid;
+            grid-template-columns: 86px minmax(0, 1fr);
+            gap: 14px;
+            align-items: center;
+            padding: 14px;
+            border-radius: 22px;
+            background: rgba(248, 250, 252, 0.92);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .saved-thumb {
+            width: 86px;
+            height: 86px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #dbeafe, #fef3c7);
+            color: var(--dash-accent-dark);
+            font-size: 28px;
+        }
+
+        .saved-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .saved-copy h4 {
+            margin: 0 0 6px;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .saved-copy p {
+            margin: 0;
+            color: var(--dash-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .saved-empty {
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(248, 250, 252, 0.92);
+            border: 1px dashed rgba(148, 163, 184, 0.4);
+            color: var(--dash-muted);
+            text-align: center;
+        }
+
         @media (max-width: 1199.98px) {
             .dashboard-grid,
-            .dashboard-main {
+            .dashboard-main,
+            .news-admin-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -721,6 +852,91 @@
                         </div>
                     </aside>
                 </section>
+
+                <section class="news-admin-grid">
+                    <div class="form-panel glass-panel">
+                        <h3 class="section-title">Latest News Publisher</h3>
+                        <p class="section-copy">Add a blog/news card with image, title, and description. It will appear automatically on the latest news page using DOM manipulation and local storage.</p>
+
+                        <form class="form-grid" id="newsForm">
+                            <div class="field-card">
+                                <label class="field-label" for="newsImageInput">
+                                    <i class="bi bi-card-image"></i>
+                                    Blog image
+                                </label>
+                                <div class="upload-zone">
+                                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                                    <div>
+                                        <strong>Select a post image</strong>
+                                        <p>This image will be shown on the latest news page card.</p>
+                                    </div>
+                                    <input id="newsImageInput" type="file" accept="image/*">
+                                </div>
+                                <div class="upload-meta" id="newsFileName">
+                                    <i class="bi bi-paperclip"></i>
+                                    No image selected
+                                </div>
+                            </div>
+
+                            <div class="field-card">
+                                <label class="field-label" for="newsTitleInput">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Blog title
+                                </label>
+                                <input class="form-control" id="newsTitleInput" type="text" placeholder="Enter blog title" value="iPhone Fold launch timeline starts to look much clearer">
+                            </div>
+
+                            <div class="field-card">
+                                <label class="field-label" for="newsDescriptionInput">
+                                    <i class="bi bi-card-text"></i>
+                                    Blog description
+                                </label>
+                                <textarea class="form-control" id="newsDescriptionInput" placeholder="Write a short blog description">Apple's foldable project is reportedly entering a more confident stage, with suppliers preparing around a slimmer hinge and crease-reduction design.</textarea>
+                            </div>
+
+                            <div class="action-row">
+                                <p class="micro-copy mb-0">Saved blog cards will stay in your browser and render on the latest news page automatically.</p>
+                                <button class="create-btn" type="submit">
+                                    <i class="bi bi-send-plus-fill me-2"></i>
+                                    Publish News Card
+                                </button>
+                            </div>
+
+                            <div class="submit-message" id="newsSubmitMessage">
+                                <i class="bi bi-check2-circle"></i>
+                                News post saved successfully.
+                            </div>
+                        </form>
+                    </div>
+
+                    <aside class="preview-panel glass-panel">
+                        <div class="preview-header">
+                            <div>
+                                <h3 class="section-title">News Preview</h3>
+                                <p class="section-copy">This preview mirrors the content that will render on your latest news page.</p>
+                            </div>
+                            <div class="preview-badge">
+                                <i class="bi bi-newspaper"></i>
+                                Blog sync
+                            </div>
+                        </div>
+
+                        <div class="news-preview">
+                            <div class="news-preview-image">
+                                <img id="newsPreviewImage" alt="News preview">
+                                <div class="news-preview-placeholder" id="newsPreviewPlaceholder">
+                                    <i class="bi bi-image"></i>
+                                    <div>Blog image preview</div>
+                                </div>
+                            </div>
+                            <div class="news-preview-tag">News</div>
+                            <h4 class="news-preview-title" id="newsPreviewTitle">iPhone Fold launch timeline starts to look much clearer</h4>
+                            <p class="news-preview-desc" id="newsPreviewDescription">Apple's foldable project is reportedly entering a more confident stage, with suppliers preparing around a slimmer hinge and crease-reduction design.</p>
+                        </div>
+
+                        <div class="saved-list" id="savedNewsList"></div>
+                    </aside>
+                </section>
             </div>
         </div>
     </div>
@@ -740,6 +956,18 @@
         const productForm = document.getElementById('productForm');
         const submitMessage = document.getElementById('submitMessage');
         const storageKey = 'phoneWebProducts';
+        const newsStorageKey = 'phoneWebNewsPosts';
+        const newsForm = document.getElementById('newsForm');
+        const newsImageInput = document.getElementById('newsImageInput');
+        const newsFileName = document.getElementById('newsFileName');
+        const newsTitleInput = document.getElementById('newsTitleInput');
+        const newsDescriptionInput = document.getElementById('newsDescriptionInput');
+        const newsPreviewImage = document.getElementById('newsPreviewImage');
+        const newsPreviewPlaceholder = document.getElementById('newsPreviewPlaceholder');
+        const newsPreviewTitle = document.getElementById('newsPreviewTitle');
+        const newsPreviewDescription = document.getElementById('newsPreviewDescription');
+        const newsSubmitMessage = document.getElementById('newsSubmitMessage');
+        const savedNewsList = document.getElementById('savedNewsList');
 
         function formatPrice(value) {
             const number = Number(value) || 0;
@@ -758,10 +986,67 @@
             localStorage.setItem(storageKey, JSON.stringify(products));
         }
 
+        function getStoredNewsPosts() {
+            try {
+                return JSON.parse(localStorage.getItem(newsStorageKey)) || [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveNewsPosts(posts) {
+            localStorage.setItem(newsStorageKey, JSON.stringify(posts));
+        }
+
         function syncPreview() {
             previewTitle.textContent = titleInput.value.trim() || 'Your mobile title';
             previewDescription.textContent = descriptionInput.value.trim() || 'Your short description will appear here.';
             previewPrice.textContent = formatPrice(priceInput.value);
+        }
+
+        function syncNewsPreview() {
+            newsPreviewTitle.textContent = newsTitleInput.value.trim() || 'Your blog title will appear here';
+            newsPreviewDescription.textContent = newsDescriptionInput.value.trim() || 'Your blog description will appear here.';
+        }
+
+        function renderSavedNewsPosts() {
+            const posts = getStoredNewsPosts();
+            savedNewsList.innerHTML = '';
+
+            if (!posts.length) {
+                savedNewsList.innerHTML = '<div class="saved-empty">No news posts saved yet. Create one and it will show here and on the latest news page.</div>';
+                return;
+            }
+
+            posts.slice(0, 4).forEach((post) => {
+                const item = document.createElement('article');
+                item.className = 'saved-item';
+
+                const thumb = document.createElement('div');
+                thumb.className = 'saved-thumb';
+
+                if (post.image) {
+                    const image = document.createElement('img');
+                    image.src = post.image;
+                    image.alt = post.title;
+                    thumb.appendChild(image);
+                } else {
+                    thumb.innerHTML = '<i class="bi bi-newspaper"></i>';
+                }
+
+                const copy = document.createElement('div');
+                copy.className = 'saved-copy';
+
+                const heading = document.createElement('h4');
+                heading.textContent = post.title;
+
+                const text = document.createElement('p');
+                text.textContent = post.description;
+
+                copy.append(heading, text);
+                item.append(thumb, copy);
+                savedNewsList.appendChild(item);
+            });
         }
 
         imageInput.addEventListener('change', (event) => {
@@ -786,6 +1071,28 @@
             reader.readAsDataURL(file);
         });
 
+        newsImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            if (!file) {
+                newsFileName.innerHTML = '<i class="bi bi-paperclip"></i>No image selected';
+                newsPreviewImage.style.display = 'none';
+                newsPreviewImage.removeAttribute('src');
+                newsPreviewPlaceholder.style.display = 'block';
+                return;
+            }
+
+            newsFileName.innerHTML = `<i class="bi bi-check2-circle"></i>${file.name}`;
+
+            const reader = new FileReader();
+            reader.onload = (loadEvent) => {
+                newsPreviewImage.src = loadEvent.target.result;
+                newsPreviewImage.style.display = 'block';
+                newsPreviewPlaceholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        });
+
         titleInput.addEventListener('input', () => {
             submitMessage.style.display = 'none';
             syncPreview();
@@ -797,6 +1104,14 @@
         priceInput.addEventListener('input', () => {
             submitMessage.style.display = 'none';
             syncPreview();
+        });
+        newsTitleInput.addEventListener('input', () => {
+            newsSubmitMessage.style.display = 'none';
+            syncNewsPreview();
+        });
+        newsDescriptionInput.addEventListener('input', () => {
+            newsSubmitMessage.style.display = 'none';
+            syncNewsPreview();
         });
 
         productForm.addEventListener('submit', (event) => {
@@ -838,7 +1153,45 @@
             syncPreview();
         });
 
+        newsForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const title = newsTitleInput.value.trim();
+            const description = newsDescriptionInput.value.trim();
+            const image = newsPreviewImage.getAttribute('src') || '';
+
+            if (!title || !description) {
+                newsSubmitMessage.style.display = 'flex';
+                newsSubmitMessage.innerHTML = '<i class="bi bi-exclamation-circle"></i>Please complete the blog title and description before publishing.';
+                return;
+            }
+
+            const posts = getStoredNewsPosts();
+            posts.unshift({
+                id: Date.now(),
+                title,
+                description,
+                image,
+                createdAt: new Date().toISOString()
+            });
+
+            saveNewsPosts(posts);
+            renderSavedNewsPosts();
+
+            newsSubmitMessage.style.display = 'flex';
+            newsSubmitMessage.innerHTML = '<i class="bi bi-check2-circle"></i>News post saved. Open the latest news page to see it there.';
+
+            newsForm.reset();
+            newsFileName.innerHTML = '<i class="bi bi-paperclip"></i>No image selected';
+            newsPreviewImage.style.display = 'none';
+            newsPreviewImage.removeAttribute('src');
+            newsPreviewPlaceholder.style.display = 'block';
+            syncNewsPreview();
+        });
+
         syncPreview();
+        syncNewsPreview();
+        renderSavedNewsPosts();
     </script>
 </body>
 </html>

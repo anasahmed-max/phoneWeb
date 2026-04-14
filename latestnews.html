@@ -20,7 +20,7 @@
 
         <nav class="navbar navbar-expand-lg header-navbar">
             <div class="container header-row">
-                <button class="navbar-toggler header-toggle border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler header-toggle border-0 shadow-none" id="menuOpenButton" type="button" aria-label="Open menu" aria-controls="siteDrawer" aria-expanded="false">
                     <i class="bi bi-list"></i>
                 </button>
 
@@ -72,99 +72,267 @@
         </nav>
     </header>
 
+    <div class="site-drawer-backdrop" id="menuBackdrop"></div>
+    <aside class="site-drawer" id="siteDrawer" aria-label="Site menu">
+        <div class="site-drawer-header">
+            <div class="site-drawer-brand">PhoneWeb</div>
+            <button class="site-drawer-close" id="menuCloseButton" type="button" aria-label="Close menu">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+        </div>
+        <ul class="site-drawer-menu" id="drawerMenu"></ul>
+    </aside>
+
+    <main class="page-shell news-page-shell">
+        <section class="news-archive-section">
+            <div class="container">
+                <div class="news-archive-head">
+                    <nav class="news-breadcrumb" aria-label="Breadcrumb">
+                        <a href="index.html">Home</a>
+                        <span>&raquo;</span>
+                        <span>News</span>
+                    </nav>
+                    <h1>Category: News</h1>
+                </div>
+
+                <div class="news-list" id="newsList"></div>
+            </div>
+        </section>
+    </main>
+
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-        const heroSlides = document.querySelectorAll('[data-slide]');
-        const heroDots = document.querySelectorAll('.hero-dot');
-        const prevButton = document.querySelector('.hero-nav-prev');
-        const nextButton = document.querySelector('.hero-nav-next');
-        let currentSlide = 0;
+        const menuItems = [
+            {
+                type: 'accordion',
+                label: 'Top Brands',
+                icon: 'bi-phone',
+                children: ['Apple', 'Samsung', 'Xiaomi', 'Vivo', 'Oppo']
+            },
+            {
+                type: 'accordion',
+                label: 'Budget',
+                icon: 'bi-cash-stack',
+                children: [
+                    'Under Rs. 20,000',
+                    'Rs. 20,000 - 40,000',
+                    'Rs. 40,000 - 60,000',
+                    'Rs. 60,000 - 100,000',
+                    'Above Rs. 100,000'
+                ]
+            },
+            { type: 'link', label: 'Phone Finder', icon: 'bi-search', href: '#' },
+            { type: 'link', label: 'Latest Mobiles', icon: 'bi-stars', href: 'index.html' },
+            { type: 'link', label: 'Upcoming Mobiles', icon: 'bi-calendar-event', href: '#' },
+            { type: 'link', label: 'Latest News', icon: 'bi-newspaper', href: 'latestnews.html' },
+            { type: 'link', label: 'Dashboard', icon: 'bi-grid-1x2-fill', href: 'dashboard.html' },
+            { type: 'link', label: 'Contact Us', icon: 'bi-envelope', href: '#' }
+        ];
 
-        function renderHeroSlide(index) {
-            heroSlides.forEach((slide, slideIndex) => {
-                slide.classList.toggle('active', slideIndex === index);
-            });
+        const drawerMenu = document.getElementById('drawerMenu');
+        const drawer = document.getElementById('siteDrawer');
+        const backdrop = document.getElementById('menuBackdrop');
+        const openButton = document.getElementById('menuOpenButton');
+        const closeButton = document.getElementById('menuCloseButton');
 
-            heroDots.forEach((dot, dotIndex) => {
-                dot.classList.toggle('active', dotIndex === index);
+        function createMenuItem(item, index) {
+            const listItem = document.createElement('li');
+            listItem.className = 'site-drawer-item';
+
+            if (item.type === 'accordion') {
+                const button = document.createElement('button');
+                button.className = 'site-drawer-toggle';
+                button.type = 'button';
+                button.setAttribute('aria-expanded', index === 0 ? 'true' : 'false');
+
+                const content = document.createElement('span');
+                content.className = 'site-drawer-main';
+                content.innerHTML = `<i class="bi ${item.icon}"></i><span>${item.label}</span>`;
+
+                const chevron = document.createElement('i');
+                chevron.className = 'bi bi-chevron-down site-drawer-chevron';
+
+                const submenu = document.createElement('div');
+                submenu.className = `site-drawer-submenu${index === 0 ? ' open' : ''}`;
+
+                item.children.forEach((child) => {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = child;
+                    submenu.appendChild(link);
+                });
+
+                button.append(content, chevron);
+                button.addEventListener('click', () => {
+                    const expanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', String(!expanded));
+                    submenu.classList.toggle('open', !expanded);
+                });
+
+                listItem.append(button, submenu);
+                return listItem;
+            }
+
+            const link = document.createElement('a');
+            link.className = 'site-drawer-link';
+            link.href = item.href;
+            link.innerHTML = `<span class="site-drawer-main"><i class="bi ${item.icon}"></i><span>${item.label}</span></span>`;
+            listItem.appendChild(link);
+            return listItem;
+        }
+
+        function renderMenu() {
+            drawerMenu.innerHTML = '';
+            menuItems.forEach((item, index) => {
+                drawerMenu.appendChild(createMenuItem(item, index));
             });
         }
 
-        function goToHeroSlide(index) {
-            currentSlide = (index + heroSlides.length) % heroSlides.length;
-            renderHeroSlide(currentSlide);
+        function setMenuState(open) {
+            drawer.classList.toggle('active', open);
+            backdrop.classList.toggle('active', open);
+            openButton.setAttribute('aria-expanded', String(open));
+            document.body.style.overflow = open ? 'hidden' : '';
         }
 
-        prevButton.addEventListener('click', () => goToHeroSlide(currentSlide - 1));
-        nextButton.addEventListener('click', () => goToHeroSlide(currentSlide + 1));
-        heroDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => goToHeroSlide(index));
+        openButton.addEventListener('click', () => setMenuState(true));
+        closeButton.addEventListener('click', () => setMenuState(false));
+        backdrop.addEventListener('click', () => setMenuState(false));
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                setMenuState(false);
+            }
         });
 
-        setInterval(() => {
-            goToHeroSlide(currentSlide + 1);
-        }, 4500);
+        renderMenu();
 
-        renderHeroSlide(currentSlide);
+        const newsStorageKey = 'phoneWebNewsPosts';
+        const newsList = document.getElementById('newsList');
+        const fallbackNewsPosts = [
+            {
+                title: "Galaxy S26 Ultra: Samsung Teases World's First Built-in Privacy Glass Display!",
+                description: 'Samsung is once again pushing smartphone innovation forward. A newly released teaser hints that the upcoming Galaxy S26 Ultra will debut with a built-in privacy display layer that blocks side-angle viewing without sacrificing brightness.',
+                createdAt: '2026-02-04T00:00:00.000Z',
+                featured: true,
+                art: 'privacy'
+            },
+            {
+                title: 'Xiaomi 16 Pro camera leak points to a larger one-inch primary sensor',
+                description: 'Fresh supply-chain leaks suggest Xiaomi is testing a larger flagship sensor to improve low-light detail and cinematic video performance.',
+                createdAt: '2026-02-02T00:00:00.000Z',
+                art: 'camera'
+            },
+            {
+                title: "Qualcomm's next Snapdragon chip is expected to focus heavily on on-device AI",
+                description: 'Benchmark chatter suggests improved efficiency, stronger NPU throughput, and better sustained gaming performance across premium phones.',
+                createdAt: '2026-01-29T00:00:00.000Z',
+                art: 'chip'
+            }
+        ];
 
-        const minRange = document.getElementById('minRange');
-        const maxRange = document.getElementById('maxRange');
-        const minInput = document.getElementById('minInput');
-        const maxInput = document.getElementById('maxInput');
-        const minLabel = document.getElementById('minLabel');
-        const maxLabel = document.getElementById('maxLabel');
-        const priceProgress = document.getElementById('priceProgress');
-        const maxPrice = 650000;
-        const minGap = 5000;
-
-        function formatLabel(value) {
-            return value >= 100000 ? `${(value / 100000).toFixed(value % 100000 === 0 ? 0 : 1)} Lac` : value.toLocaleString();
+        function getStoredNewsPosts() {
+            try {
+                return JSON.parse(localStorage.getItem(newsStorageKey)) || [];
+            } catch (error) {
+                return [];
+            }
         }
 
-        function updateSlider(fromMinInput = false) {
-            let minValue = Number(minRange.value);
-            let maxValue = Number(maxRange.value);
+        function formatNewsDate(value) {
+            const date = value ? new Date(value) : new Date();
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
 
-            if (maxValue - minValue < minGap) {
-                if (fromMinInput) {
-                    minValue = maxValue - minGap;
-                    minRange.value = minValue;
-                } else {
-                    maxValue = minValue + minGap;
-                    maxRange.value = maxValue;
-                }
+        function createFallbackArt(type, featured = false) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `news-art ${type}-art`;
+            wrapper.setAttribute('aria-hidden', 'true');
+
+            if (type === 'privacy') {
+                wrapper.classList.add('privacy-art');
+                wrapper.innerHTML = `
+                    <span class="privacy-word privacy-word-top">Privacy</span>
+                    <div class="privacy-phone">
+                        <div class="privacy-speaker"></div>
+                        <div class="privacy-screen">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <span class="privacy-word privacy-word-bottom">Display</span>
+                `;
+                return wrapper;
             }
 
-            minInput.value = minValue;
-            maxInput.value = maxValue;
-            minLabel.textContent = minValue.toLocaleString();
-            maxLabel.textContent = formatLabel(maxValue);
-
-            const left = (minValue / maxPrice) * 100;
-            const right = (maxValue / maxPrice) * 100;
-            priceProgress.style.left = `${left}%`;
-            priceProgress.style.width = `${right - left}%`;
-        }
-
-        function updateFromBoxes() {
-            let minValue = Math.max(0, Math.min(Number(minInput.value) || 0, maxPrice - minGap));
-            let maxValue = Math.min(maxPrice, Math.max(Number(maxInput.value) || maxPrice, minGap));
-
-            if (maxValue - minValue < minGap) {
-                maxValue = Math.min(maxPrice, minValue + minGap);
+            if (type === 'camera') {
+                wrapper.classList.add('camera-art');
+                wrapper.innerHTML = '<div class="camera-disc"></div><div class="camera-ring ring-one"></div><div class="camera-ring ring-two"></div>';
+                return wrapper;
             }
 
-            minRange.value = minValue;
-            maxRange.value = maxValue;
-            updateSlider(true);
+            wrapper.classList.add('chip-art');
+            wrapper.innerHTML = '<div class="chip-core">AI</div><span class="chip-pin pin-top-left"></span><span class="chip-pin pin-top-right"></span><span class="chip-pin pin-bottom-left"></span><span class="chip-pin pin-bottom-right"></span>';
+            return wrapper;
         }
 
-        minRange.addEventListener('input', () => updateSlider(true));
-        maxRange.addEventListener('input', () => updateSlider(false));
-        minInput.addEventListener('input', updateFromBoxes);
-        maxInput.addEventListener('input', updateFromBoxes);
+        function createNewsCard(post, index) {
+            const isFeatured = index === 0;
+            const article = document.createElement('article');
+            article.className = `news-card ${isFeatured ? 'news-card-featured' : 'news-card-inline'}`;
 
-        updateSlider(true);
+            const media = document.createElement('div');
+            media.className = `news-media ${isFeatured ? '' : 'small-media'}`.trim();
+
+            if (post.image) {
+                const image = document.createElement('img');
+                image.className = 'news-media-image';
+                image.src = post.image;
+                image.alt = post.title;
+                media.appendChild(image);
+            } else {
+                media.appendChild(createFallbackArt(post.art || (isFeatured ? 'privacy' : 'camera'), isFeatured));
+            }
+
+            const body = document.createElement('div');
+            body.className = 'news-card-body';
+
+            const tag = document.createElement('span');
+            tag.className = 'news-tag';
+            tag.textContent = 'News';
+
+            const title = document.createElement('h2');
+            title.textContent = post.title;
+
+            const meta = document.createElement('div');
+            meta.className = 'news-meta';
+            meta.innerHTML = `<span><i class="bi bi-calendar3"></i> ${formatNewsDate(post.createdAt)}</span>`;
+
+            const description = document.createElement('p');
+            description.textContent = post.description;
+
+            body.append(tag, title, meta, description);
+            article.append(media, body);
+            return article;
+        }
+
+        function renderNewsPosts() {
+            const storedPosts = getStoredNewsPosts();
+            const posts = storedPosts.length ? storedPosts : fallbackNewsPosts;
+            newsList.innerHTML = '';
+            posts.forEach((post, index) => {
+                newsList.appendChild(createNewsCard(post, index));
+            });
+        }
+
+        renderNewsPosts();
+        window.addEventListener('storage', renderNewsPosts);
+        window.addEventListener('focus', renderNewsPosts);
     </script>
 </body>
 </html>

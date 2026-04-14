@@ -20,7 +20,7 @@
 
         <nav class="navbar navbar-expand-lg header-navbar">
             <div class="container header-row">
-                <button class="navbar-toggler header-toggle border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#headerNav" aria-controls="headerNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler header-toggle border-0 shadow-none" id="menuOpenButton" type="button" aria-label="Open menu" aria-controls="siteDrawer" aria-expanded="false">
                     <i class="bi bi-list"></i>
                 </button>
 
@@ -71,6 +71,17 @@
             </div>
         </nav>
     </header>
+
+    <div class="site-drawer-backdrop" id="menuBackdrop"></div>
+    <aside class="site-drawer" id="siteDrawer" aria-label="Site menu">
+        <div class="site-drawer-header">
+            <div class="site-drawer-brand">PhoneWeb</div>
+            <button class="site-drawer-close" id="menuCloseButton" type="button" aria-label="Close menu">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+        </div>
+        <ul class="site-drawer-menu" id="drawerMenu"></ul>
+    </aside>
 
     <main class="page-shell">
         <section class="hero-section">
@@ -287,6 +298,111 @@
     </main>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
+        const menuItems = [
+            {
+                type: 'accordion',
+                label: 'Top Brands',
+                icon: 'bi-phone',
+                children: ['Apple', 'Samsung', 'Xiaomi', 'Vivo', 'Oppo']
+            },
+            {
+                type: 'accordion',
+                label: 'Budget',
+                icon: 'bi-cash-stack',
+                children: [
+                    'Under Rs. 20,000',
+                    'Rs. 20,000 - 40,000',
+                    'Rs. 40,000 - 60,000',
+                    'Rs. 60,000 - 100,000',
+                    'Above Rs. 100,000'
+                ]
+            },
+            { type: 'link', label: 'Phone Finder', icon: 'bi-search', href: '#' },
+            { type: 'link', label: 'Latest Mobiles', icon: 'bi-stars', href: '#' },
+            { type: 'link', label: 'Upcoming Mobiles', icon: 'bi-calendar-event', href: '#' },
+            { type: 'link', label: 'Latest News', icon: 'bi-newspaper', href: 'latestnews.html' },
+            { type: 'link', label: 'Dashboard', icon: 'bi-grid-1x2-fill', href: 'dashboard.html' },
+            { type: 'link', label: 'Contact Us', icon: 'bi-envelope', href: '#' }
+        ];
+
+        const drawerMenu = document.getElementById('drawerMenu');
+        const drawer = document.getElementById('siteDrawer');
+        const backdrop = document.getElementById('menuBackdrop');
+        const openButton = document.getElementById('menuOpenButton');
+        const closeButton = document.getElementById('menuCloseButton');
+
+        function createMenuItem(item, index) {
+            const listItem = document.createElement('li');
+            listItem.className = 'site-drawer-item';
+
+            if (item.type === 'accordion') {
+                const button = document.createElement('button');
+                button.className = 'site-drawer-toggle';
+                button.type = 'button';
+                button.setAttribute('aria-expanded', index === 0 ? 'true' : 'false');
+
+                const content = document.createElement('span');
+                content.className = 'site-drawer-main';
+                content.innerHTML = `<i class="bi ${item.icon}"></i><span>${item.label}</span>`;
+
+                const chevron = document.createElement('i');
+                chevron.className = 'bi bi-chevron-down site-drawer-chevron';
+
+                const submenu = document.createElement('div');
+                submenu.className = `site-drawer-submenu${index === 0 ? ' open' : ''}`;
+
+                item.children.forEach((child) => {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = child;
+                    submenu.appendChild(link);
+                });
+
+                button.append(content, chevron);
+                button.addEventListener('click', () => {
+                    const expanded = button.getAttribute('aria-expanded') === 'true';
+                    button.setAttribute('aria-expanded', String(!expanded));
+                    submenu.classList.toggle('open', !expanded);
+                });
+
+                listItem.append(button, submenu);
+                return listItem;
+            }
+
+            const link = document.createElement('a');
+            link.className = 'site-drawer-link';
+            link.href = item.href;
+            link.innerHTML = `<span class="site-drawer-main"><i class="bi ${item.icon}"></i><span>${item.label}</span></span>`;
+            listItem.appendChild(link);
+            return listItem;
+        }
+
+        function renderMenu() {
+            drawerMenu.innerHTML = '';
+            menuItems.forEach((item, index) => {
+                drawerMenu.appendChild(createMenuItem(item, index));
+            });
+        }
+
+        function setMenuState(open) {
+            drawer.classList.toggle('active', open);
+            backdrop.classList.toggle('active', open);
+            openButton.setAttribute('aria-expanded', String(open));
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+
+        openButton.addEventListener('click', () => setMenuState(true));
+        closeButton.addEventListener('click', () => setMenuState(false));
+        backdrop.addEventListener('click', () => setMenuState(false));
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                setMenuState(false);
+            }
+        });
+
+        renderMenu();
+
         const storageKey = 'phoneWebProducts';
         const heroSlides = document.querySelectorAll('[data-slide]');
         const heroDots = document.querySelectorAll('.hero-dot');
